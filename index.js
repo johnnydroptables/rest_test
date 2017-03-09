@@ -1,5 +1,4 @@
 const request = require('request');
-const accounting = require('accounting');
 
 const url = 'http://resttest.bench.co/transactions';  // leave off trailing '/'
 const pageLimit = 100; // safety margin
@@ -83,16 +82,16 @@ function getTransactions() {
       request(uri, (err, res, body) => {
         let data = {};
 
+        if (err) {
+          reject(err);
+        }
+        
         try {
           data = JSON.parse(body);
         } catch (e) {
           reject(e);
         }
 
-        if (err) {
-          reject(err);
-        }
-        
         transactions = transactions.concat(data.transactions);
 
         if (data.totalCount > transactions.length) {
